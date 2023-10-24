@@ -1,6 +1,6 @@
 {
   "name": "@haixing_hu/rollup-builder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An tool for creating multi-format JavaScript libraries with Rollup.",
   "author": "Haixing Hu",
   "license": "Apache-2.0",
@@ -12,6 +12,15 @@
     "url": "https://github.com/Haixing-Hu/rollup-builder/issues"
   },
   "homepage": "https://github.com/Haixing-Hu/rollup-builder",
+  "keywords": [
+    "JavaScript",
+    "rollup",
+    "bundling",
+    "cjs",
+    "esm",
+    "umd",
+    "library"
+  ],
   "main": "dist/rollup-builder.cjs.min.js",
   "module": "dist/rollup-builder.esm.min.mjs",
   "exports": {
