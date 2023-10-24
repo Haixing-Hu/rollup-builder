@@ -107,18 +107,19 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="configuration">配置选项</span>
 
-- `libraryName` (string): 你的库的名称（在 UMD 格式中使用）。
-- `importMetaUrl` (string): 调用者模块的 `import.meta.url`。
-- `options` (object): 附加的构建选项，包括：
-    - `formats` (array): 构建的格式数组（默认：`['cjs', 'esm']`）。
-    - `nodeEnv` (string): `NODE_ENV` 环境变量（默认：`process.env.NODE_ENV`）。
-    - `minify` (boolean): 是否对代码进行压缩（默认：对于生产环境为 `true`，否则为 `false`）。
-    - `sourcemap` (boolean): 是否生成源映射（默认：`true`）。
-    - `input` (string): 库的输入文件（默认：`'src/index.js'`）。
-    - `outputDir` (string): 库的输出目录（默认：`'dist'`）。
-    - `filenamePrefix` (string): 输出文件的前缀（默认：库名称的短横线形式）。
-    - `useAliasPlugin`: 是否使用 `@rollup/plugin-alias` 插件。如果未指定此字段，其默认值为 `true`。
-    - `aliasPluginOptions`: `@rollup/plugin-alias` 插件的选项。如果未指定此字段，其默认值为：
+- `libraryName`（字符串）：你的库的名称（在 UMD 格式中使用）。
+- `importMetaUrl`（字符串）：调用者模块的 `import.meta.url`。
+- `options`（对象）：额外的构建选项，包括：
+    - `formats`（字符串数组）：构建的格式数组。如果未指定此字段，默认值为 `['cjs', 'esm']`。
+    - `nodeEnv`（字符串）：`NODE_ENV` 环境变量。如果未指定此字段，默认值为 `process.env.NODE_ENV`。
+    - `minify`（布尔值）：是否对代码进行压缩。如果未指定此字段，对于生产环境，默认值为 `true`，否则为 `false`。
+    - `sourcemap`（布尔值）：是否生成源映射。如果未指定此字段，默认值为 `true`。
+    - `input`（字符串）：库的输入文件。如果未指定此字段，默认值为 `'src/index.js'`。
+    - `outputDir`（字符串）：库的输出目录。如果未指定此字段，默认值为 `'dist'`。
+    - `filenamePrefix`（字符串）：输出文件的前缀。如果未指定此字段，默认值为库名称的短横线形式。
+    - `externals`（字符串数组）：额外的外部包，每个可以通过字符串或正则表达式指定。如果未指定此字段，默认值为空数组。
+    - `useAliasPlugin`（布尔值）：是否使用 `@rollup/plugin-alias` 插件。如果未指定此字段，默认值为 `true`。
+    - `aliasPluginOptions`（对象）：`@rollup/plugin-alias` 插件的选项。如果未指定此字段，默认值为：
       ```js
       {
         entries: {
@@ -127,17 +128,17 @@ yarn add @haixing_hu/rollup-builder --dev
         },
       }
       ```
-    - `useNodeResolvePlugin`: 是否使用 `@rollup/plugin-node-resolve` 插件。如果未指定此字段，其默认值为 `true`。
-    - `nodeResolvePluginOptions`: `@rollup/plugin-node-resolve` 插件的选项。如果未指定此字段，其默认值为：`{}`。
-    - `useCommonjsPlugin`: 是否使用 `@rollup/plugin-commonjs` 插件。如果未指定此字段，其默认值为 `true`。
-    - `commonjsPluginOptions`: `@rollup/plugin-commonjs` 插件的选项。如果未指定此字段，其默认值为：
+    - `useNodeResolvePlugin`（布尔值）：是否使用 `@rollup/plugin-node-resolve` 插件。如果未指定此字段，默认值为 `true`。
+    - `nodeResolvePluginOptions`（对象）：`@rollup/plugin-node-resolve` 插件的选项。如果未指定此字段，默认值为：`{}`。
+    - `useCommonjsPlugin`（布尔值）：是否使用 `@rollup/plugin-commonjs` 插件。如果未指定此字段，默认值为 `true`。
+    - `commonjsPluginOptions`（对象）：`@rollup/plugin-commonjs` 插件的选项。如果未指定此字段，默认值为：
       ```js
       {
         include: ['node_modules/**'],
       }
       ```
-    - `useBabelPlugin`: 是否使用 `@rollup/plugin-babel` 插件。如果未指定此字段，其默认值为 `true`。
-    - `babelPluginOptions`: `@rollup/plugin-babel` 插件的选项。如果未指定此字段，其默认值为：
+    - `useBabelPlugin`（布尔值）：是否使用 `@rollup/plugin-babel` 插件。如果未指定此字段，默认值为 `true`。
+    - `babelPluginOptions`（对象）：`@rollup/plugin-babel` 插件的选项。如果未指定此字段，默认值为：
       ```js
       {
         babelHelpers: 'runtime',
@@ -152,10 +153,13 @@ yarn add @haixing_hu/rollup-builder --dev
       ```
       请注意，如果使用 `@rollup/plugin-babel` 插件，你还可以在标准的 Babel 配置文件中指定 
       Babel 的配置，例如 `babel.config.js`、`.babelrc` 等。
-    - `terserOptions`: `@rollup/plugin-terser` 插件的选项。如果未指定此字段，其默认值为：`{}`。
-      是否使用 `@rollup/plugin-terser` 插件取决于选项的 `minify` 字段或 `NODE_ENV` 环境变量。
-    - `useAnalyzerPlugin`: 是否使用 `rollup-plugin-analyzer` 插件。如果未指定此字段，其默认值为 `true`。
-    - `analyzerOptions`: `rollup-plugin-analyzer` 插件的选项。如果未指定此字段，其默认值为：
+    - `terserOptions`（对象）：`@rollup/plugin-terser` 插件的选项。如果未指定此字段，
+      默认值为：`{}`。是否使用 `@rollup/plugin-terser` 插件取决于选项的 `minify` 字段或 
+      `NODE_ENV` 环境变量。
+    - `useAnalyzerPlugin`（布尔值）：是否使用 `rollup-plugin-analyzer` 插件。
+      如果未指定此字段，默认值为 `true`。
+    - `analyzerOptions`（对象）：`rollup-plugin-analyzer` 插件的选项。
+      如果未指定此字段，默认值为：
       ```js
       {
         hideDeps: true,
@@ -163,7 +167,8 @@ yarn add @haixing_hu/rollup-builder --dev
         summaryOnly: true,
       }
       ```
-    - `plugins`: 附加的 Rollup 插件。如果未指定此字段，其默认值为空数组。
+    - `plugins`（对象数组）：额外的 Rollup 插件。如果未指定此字段，默认值为空数组。
+
 
 ## <span id="contributions">贡献</span>
 

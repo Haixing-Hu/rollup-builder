@@ -118,19 +118,29 @@ yarn add @haixing_hu/rollup-builder --dev
 - `libraryName` (string): The name of your library (used in the UMD format).
 - `importMetaUrl` (string): The `import.meta.url` of the caller module.
 - `options` (object): Additional build options, including:
-    - `formats` (array): An array of formats to build (default: `['cjs', 'esm']`).
-    - `nodeEnv` (string): The `NODE_ENV` environment variable (default: `process.env.NODE_ENV`).
-    - `minify` (boolean): Whether to minify the code (default: `true` for 
-      production environment, `false` otherwise).
-    - `sourcemap` (boolean): Whether to generate sourcemaps (default: `true`).
-    - `input` (string): The input file of the library (default: `'src/index.js'`).
-    - `outputDir` (string): The output directory of the library (default: `'dist'`).
-    - `filenamePrefix` (string): The prefix for the output filename (default:
-      dash-case of the library name).
-    - `useAliasPlugin`: whether to use the `@rollup/plugin-alias` plugin. If
-      this field is not specified, the default value is `true`.
-    - `aliasPluginOptions`: the options for the `@rollup/plugin-alias` plugin.
-      If this field is not specified, the default value is:
+    - `formats` (\[string\]): An array of formats to build. If this field is not
+      specified, the default value is `['cjs', 'esm']`.
+    - `nodeEnv` (string): The `NODE_ENV` environment variable. If this field is 
+      not specified, the default value is `process.env.NODE_ENV`.
+    - `minify` (boolean): Whether to minify the code. If this field is not 
+      specified, the default value will be `true` for production environment, 
+      and `false` otherwise.
+    - `sourcemap` (boolean): Whether to generate sourcemaps. If this field is not
+      specified, the default value is `true`.
+    - `input` (string): The input file of the library. If this field is not
+      specified, the default value is `src/index.js`.
+    - `outputDir` (string): The output directory of the library. If this field 
+      is not specified, the default value is `dist`.
+    - `filenamePrefix` (string): The prefix for the output filename. If this 
+      field is not specified, the default value the dash-case of the library 
+      name.
+    - `externals` (\[string\]): the additional external packages, each can be 
+      specified with either a string or a regular expression. If this field is
+      not specified, the default value is an empty array.
+    - `useAliasPlugin` (boolean): whether to use the `@rollup/plugin-alias` 
+      plugin. If this field is not specified, the default value is `true`.
+    - `aliasPluginOptions` (object): the options for the `@rollup/plugin-alias` 
+      plugin. If this field is not specified, the default value is:
       ```js
       {
         entries: {
@@ -139,22 +149,22 @@ yarn add @haixing_hu/rollup-builder --dev
         },
       }
       ```
-    - `useNodeResolvePlugin`: whether to use the `@rollup/plugin-node-resolve`
+    - `useNodeResolvePlugin` (boolean): whether to use the `@rollup/plugin-node-resolve`
       plugin. If this field is not specified, the default value is `true`.
-    - `nodeResolvePluginOptions`: the options for the `@rollup/plugin-node-resolve`
+    - `nodeResolvePluginOptions` (object): the options for the `@rollup/plugin-node-resolve`
       plugin. If this field is not specified, the default value is: `{}`.
-    - `useCommonjsPlugin`: whether to use the `@rollup/plugin-commonjs` plugin.
+    - `useCommonjsPlugin` (boolean): whether to use the `@rollup/plugin-commonjs` plugin.
       If this field is not specified, the default value is `true`.
-    - `commonjsPluginOptions`: the options for the `@rollup/plugin-commonjs`
+    - `commonjsPluginOptions` (object): the options for the `@rollup/plugin-commonjs`
       plugin. If this field is not specified, the default value is:
       ```js
       {
         include: ['node_modules/**'],
       }
       ```
-    - `useBabelPlugin`: whether to use the `@rollup/plugin-babel` plugin.
+    - `useBabelPlugin` (boolean): whether to use the `@rollup/plugin-babel` plugin.
       If this field is not specified, the default value is `true`.
-    - `babelPluginOptions`: the options for the `@rollup/plugin-babel` plugin.
+    - `babelPluginOptions` (object): the options for the `@rollup/plugin-babel` plugin.
       If this field is not specified, the default value is:
       ```js
       {
@@ -171,13 +181,13 @@ yarn add @haixing_hu/rollup-builder --dev
       Note that if use the `@rollup/plugin-babel` plugin, you can also specify
       the configuration of Babel in the standard Babel configuration files,
       such as `babel.config.js`, `.babelrc`, etc.
-    - `terserOptions`: the options for the `@rollup/plugin-terser` plugin.
+    - `terserOptions` (object): the options for the `@rollup/plugin-terser` plugin.
       If this field is not specified, the default value is: `{}`. Whether
       to use the `@rollup/plugin-terser` plugin depends on the `minify`
       field of the options or the `NODE_ENV` environment variable.
-    - `useAnalyzerPlugin`: whether to use the `rollup-plugin-analyzer` plugin.
+    - `useAnalyzerPlugin` (boolean): whether to use the `rollup-plugin-analyzer` plugin.
       If this field is not specified, the default value is `true`.
-    - `analyzerOptions`: the options for the `rollup-plugin-analyzer` plugin.
+    - `analyzerOptions` (object): the options for the `rollup-plugin-analyzer` plugin.
       If this field is not specified, the default value is:
       ```js
       {
@@ -186,7 +196,7 @@ yarn add @haixing_hu/rollup-builder --dev
         summaryOnly: true,
       }
       ```
-    - `plugins`: the additional Rollup plugins. If this field is not
+    - `plugins` (\[object\]): the additional Rollup plugins. If this field is not
       specified, the default value is an empty array.
 
 ## <span id="contributions">Contributions</span>

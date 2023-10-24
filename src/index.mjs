@@ -215,6 +215,9 @@ function getRollupPlugins(format, importMetaUrl, options) {
  *       not specified, the default value is the dash case of the library name.
  *       For example, if the library name is `MyLibrary`, the default value of
  *       this field is `my-library`.
+ *     - `externals`: the additional external packages, each can be specified
+ *       with either a string or a regular expression. If this field is not
+ *       specified, the default value is an empty array.
  *     - `useAliasPlugin`: whether to use the `@rollup/plugin-alias` plugin. If
  *       this field is not specified, the default value is `true`.
  *     - `aliasPluginOptions`: the options for the `@rollup/plugin-alias` plugin.
