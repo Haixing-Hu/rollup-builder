@@ -5,19 +5,20 @@
 [![English Document](https://img.shields.io/badge/Document-English-blue.svg)](README.md)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
 
-`rollup-builder` 是一个多功能的工具，用于简化使用 Rollup 打包器构建 JavaScript 库的过程。它允许您生成多种格式，如 
-CommonJS (CJS)、ES Module (ESM) 和 Universal Module Definition (UMD) 格式，可以选择是否进行代码压缩。
+`rollup-builder` 提供了一个工具函数，用于简化使用 Rollup 打包器构建 JavaScript 库的过程。
+它允许您生成多种格式，如 CommonJS (CJS)、ES Module (ESM) 和 Universal Module 
+Definition (UMD) 格式，可以选择是否进行代码压缩。
 
 ## 目录
 
-- [特点](#features)
+- [特性](#features)
 - [安装](#installation)
 - [使用](#usage)
 - [配置选项](#configuration)
 - [贡献](#contributions)
 - [许可证](#license)
 
-## <span id="features">特点</span>
+## <span id="features">特性</span>
 
 - 以多种格式构建 JavaScript 库，使其在不同环境中通用。
 - 轻松进行生产环境下的代码压缩。

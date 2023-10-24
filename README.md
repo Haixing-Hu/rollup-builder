@@ -5,10 +5,10 @@
 [![中文文档](https://img.shields.io/badge/文档-中文版-blue.svg)](README.zh_CN.md)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
 
-`rollup-builder` is a versatile tool for simplifying the process of building 
-JavaScript libraries using the Rollup bundler. It allows you to generate 
-multiple formats, such as CommonJS (CJS), ES Module (ESM), and Universal Module
-Definition (UMD) formats, with or without minification.
+`rollup-builder` provides a utility function to simplify the process of building 
+JavaScript libraries using the Rollup bundler. It allows you to generate various 
+formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
+(UMD), and gives you the option to choose whether to perform code minification.
 
 ## Table of Contents
 
