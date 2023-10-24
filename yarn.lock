@@ -1416,6 +1416,8 @@ __metadata:
     rollup-plugin-analyzer: "npm:^4.0.0"
   peerDependencies:
     "@babel/core": ^7.23.2
+    "@babel/plugin-transform-runtime": ^7.23.2
+    "@babel/preset-env": ^7.23.2
     "@rollup/plugin-alias": ^5.0.1
     "@rollup/plugin-babel": ^6.0.4
     "@rollup/plugin-commonjs": ^25.0.7
