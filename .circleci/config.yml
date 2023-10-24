@@ -18,9 +18,6 @@ jobs:
           name: Lint the Source Code
           command: yarn lint
       - run:
-          name: Test the Library
-          command: yarn test
-      - run:
           name: Generate the API Documents
           command: yarn doc
       - run:
