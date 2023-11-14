@@ -154,8 +154,8 @@ function getRollupPlugins(format, importMetaUrl, options) {
       babelHelpers: 'runtime',
       exclude: ['node_modules/**'],
       presets: [
-        // ['@babel/preset-env', { modules: babelModules }],
-        '@babel/preset-env',
+        ['@babel/preset-env', { modules: false }],
+        //'@babel/preset-env',
       ],
       plugins: [
         '@babel/plugin-transform-runtime',
