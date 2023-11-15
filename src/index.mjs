@@ -294,7 +294,7 @@ function rollupBuilder(libraryName, importMetaUrl, options = {}) {
     const external = getRollupExternal(importMetaUrl, options);
     const plugins = getRollupPlugins(format, importMetaUrl, options);
     const config = { input, output, external, plugins };
-    console.dir(config, { depth: null });
+    // console.dir(config, { depth: null });
     result.push(config);
   }
   return result;
