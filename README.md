@@ -145,7 +145,6 @@ yarn add @haixing_hu/rollup-builder --dev
       {
         entries: {
           'src': fileURLToPath(new URL('src', importMetaUrl)),
-          '@': fileURLToPath(new URL('src', importMetaUrl)),
         },
       }
       ```

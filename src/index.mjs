@@ -113,7 +113,6 @@ function getRollupPlugins(format, importMetaUrl, options) {
     plugins.push(alias(options.aliasPluginOptions ?? {
       entries: {
         'src': fileURLToPath(new URL('src', importMetaUrl)),
-        '@': fileURLToPath(new URL('src', importMetaUrl)),
       },
     }));
   }
@@ -226,7 +225,6 @@ function getRollupPlugins(format, importMetaUrl, options) {
  *       {
  *         entries: {
  *           'src': fileURLToPath(new URL('src', importMetaUrl)),
- *           '@': fileURLToPath(new URL('src', importMetaUrl)),
  *         },
  *       }
  *       ```
