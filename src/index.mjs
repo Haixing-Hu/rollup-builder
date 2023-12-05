@@ -73,6 +73,9 @@ function getRollupExternal(importMetaUrl, options) {
   const require = createRequire(importMetaUrl);
   const pkg = require('./package.json');
   const peers = [...Object.keys(pkg.peerDependencies || {})];
+  if (peers.length === 0) {
+    return [];
+  }
   const peerPattern = (peers ? new RegExp(`^(${peers.join('|')})($|/)`) : null);
   // gets the additional external packages from the user passed options
   const additions = options.externals ?? [];
@@ -150,7 +153,7 @@ function getRollupPlugins(format, importMetaUrl, options) {
       babelHelpers: 'runtime',
       exclude: ['node_modules/**'],
       presets: [
-        // ['@babel/preset-env', { modules: babelModules }],
+        // ['@babel/preset-env', { modules: false }],
         '@babel/preset-env',
       ],
       plugins: [
@@ -288,7 +291,9 @@ function rollupBuilder(libraryName, importMetaUrl, options = {}) {
     const output = getRollupOutput(format, libraryName, options);
     const external = getRollupExternal(importMetaUrl, options);
     const plugins = getRollupPlugins(format, importMetaUrl, options);
-    result.push({ input, output, external, plugins });
+    const config = { input, output, external, plugins };
+    // console.dir(config, { depth: null });
+    result.push(config);
   }
   return result;
 }

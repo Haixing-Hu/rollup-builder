@@ -43,7 +43,7 @@
     "build:all": "yarn clean && yarn doc && yarn build:dev && yarn build",
     "lint": "eslint ./src",
     "doc": "jsdoc -c jsdoc.json",
-    "deploy": "yarn && yarn lint && npm publish --registry='https://registry.npmjs.com/' --access public"
+    "deploy": "yarn && yarn lint && yarn build:all && npm publish --registry='https://registry.npmjs.com/' --access public"
   },
   "packageManager": "yarn@4.0.0",
   "peerDependencies": {
