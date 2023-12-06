@@ -113,16 +113,26 @@ function getRollupPlugins(format, importMetaUrl, options) {
   if (options.useAliasPlugin ?? true) {
     // The @rollup/plugin-alias enables us to use absolute import paths for
     // "src" (or any other path you want to configure).
-    plugins.push(alias(options.aliasPluginOptions ?? {
+    const pluginOptions = options.aliasPluginOptions ?? {
       entries: {
         'src': fileURLToPath(new URL('src', importMetaUrl)),
       },
-    }));
+    };
+    if (options.debug === true) {
+      console.debug('[DEBUG] The @rollup/plugin-alias plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    plugins.push(alias(pluginOptions));
   }
   if (options.useNodeResolvePlugin ?? true) {
     // The @rollup/plugin-node-resolve allows Rollup to resolve external
     // modules from node_modules:
-    plugins.push(nodeResolve(options.nodeResolvePluginOptions ?? {}));
+    const pluginOptions = options.nodeResolvePluginOptions ?? {};
+    if (options.debug === true) {
+      console.debug('[DEBUG] The @rollup/plugin-node-resolve plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    plugins.push(nodeResolve(pluginOptions));
   }
   if (options.useCommonjsPlugin ?? true) {
     // The @rollup/plugin-commonjs plugin converts 3rd-party CommonJS modules
@@ -131,50 +141,59 @@ function getRollupPlugins(format, importMetaUrl, options) {
     // same Rollup configuration, it's important to note that
     // @rollup/plugin-commonjs must be placed before this plugin in the
     // plugins array for the two to work together properly.
-    plugins.push(commonjs(options.commonjsPluginOptions ?? {
+    const pluginOptions = options.commonjsPluginOptions ?? {
       include: ['node_modules/**'],
-    }));
+    };
+    if (options.debug === true) {
+      console.debug('[DEBUG] The @rollup/plugin-commonjs plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    plugins.push(commonjs(pluginOptions));
   }
   if (options.useBabelPlugin ?? true) {
-    // let babelModules = '';
-    // switch (format) {
-    //   case 'cjs':   // drop down
-    //   case 'umd':
-    //     babelModules = format;
-    //     break;
-    //   case 'esm':
-    //     babelModules = false;
-    //     break;
-    //   default:
-    //     throw new Error(`Unsupported library format: ${format}`);
-    // }
-    // The @rollup/plugin-babel enables Babel for code transpilation
-    plugins.push(babel(options.babelPluginOptions ?? {
+    const pluginOptions = options.babelPluginOptions ?? {
       babelHelpers: 'runtime',
       exclude: ['node_modules/**'],
       presets: [
-        // ['@babel/preset-env', { modules: false }],
-        '@babel/preset-env',
+        // The @babel/preset-env preset enables Babel to transpile ES6+ code
+        // and the rollup requires that Babel keeps ES6 module syntax intact.
+        ['@babel/preset-env', { modules: false }],
       ],
       plugins: [
         '@babel/plugin-transform-runtime',
       ],
-    }));
+    };
+    if (options.debug === true) {
+      console.debug('[DEBUG] The @rollup/plugin-babel plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    // The @rollup/plugin-babel enables Babel for code transpilation
+    plugins.push(babel(pluginOptions));
   }
   const nodeEnv = options.nodeEnv ?? process.env.NODE_ENV;
   const minify = options.minify ?? (nodeEnv === 'production');
   if (minify) {
     // The @rollup/plugin-terser uses terser under the hood to minify the code.
-    plugins.push(terser(options.terserPluginOptions ?? {}));
+    const pluginOptions = options.terserPluginOptions ?? {};
+    if (options.debug === true) {
+      console.debug('[DEBUG] The @rollup/plugin-terser plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    plugins.push(terser(pluginOptions));
   }
   if (options.useAnalyzerPlugin ?? true) {
     // The rollup-plugin-analyzer will print out some useful info about our
     // generated bundle upon successful builds.
-    plugins.push(analyzer(options.analyzerPluginOptions ?? {
+    const pluginOptions = options.analyzerPluginOptions ?? {
       hideDeps: true,
       limit: 0,
       summaryOnly: true,
-    }));
+    };
+    if (options.debug === true) {
+      console.debug('[DEBUG] The rollup-plugin-analyzer plugin options are:');
+      console.dir(pluginOptions, { depth: null });
+    }
+    plugins.push(analyzer(pluginOptions));
   }
   // The user can specify additional plugins.
   if (options.plugins) {
@@ -294,6 +313,10 @@ function rollupBuilder(libraryName, importMetaUrl, options = {}) {
     const config = { input, output, external, plugins };
     // console.dir(config, { depth: null });
     result.push(config);
+  }
+  if (options.debug === true) {
+    console.debug('[DEBUG] The rollup configurations are:');
+    console.dir(result, { depth: null });
   }
   return result;
 }
