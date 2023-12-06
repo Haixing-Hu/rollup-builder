@@ -118,6 +118,8 @@ yarn add @haixing_hu/rollup-builder --dev
 - `libraryName` (string): The name of your library (used in the UMD format).
 - `importMetaUrl` (string): The `import.meta.url` of the caller module.
 - `options` (object): Additional build options, including:
+    - `debug` (boolean): Whether to print debug information. If this field is not
+      specified, the default value is `false`.
     - `formats` (\[string\]): An array of formats to build. If this field is not
       specified, the default value is `['cjs', 'esm']`.
     - `nodeEnv` (string): The `NODE_ENV` environment variable. If this field is 

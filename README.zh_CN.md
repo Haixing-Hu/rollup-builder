@@ -111,6 +111,7 @@ yarn add @haixing_hu/rollup-builder --dev
 - `libraryName`（字符串）：你的库的名称（在 UMD 格式中使用）。
 - `importMetaUrl`（字符串）：调用者模块的 `import.meta.url`。
 - `options`（对象）：额外的构建选项，包括：
+    - `debug` （布尔值）：是否启用调试模式。如果未指定此字段，默认值为 `false`。
     - `formats`（字符串数组）：构建的格式数组。如果未指定此字段，默认值为 `['cjs', 'esm']`。
     - `nodeEnv`（字符串）：`NODE_ENV` 环境变量。如果未指定此字段，默认值为 `process.env.NODE_ENV`。
     - `minify`（布尔值）：是否对代码进行压缩。如果未指定此字段，对于生产环境，默认值为 `true`，否则为 `false`。
