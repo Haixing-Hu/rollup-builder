@@ -120,8 +120,25 @@ yarn add @haixing_hu/rollup-builder --dev
 - `options` (object): Additional build options, including:
     - `debug` (boolean): Whether to print debug information. If this field is not
       specified, the default value is `false`.
-    - `formats` (\[string\]): An array of formats to build. If this field is not
-      specified, the default value is `['cjs', 'esm']`.
+    - `formats` (\[string\]): An array of formats to build. It can be an array 
+      of the following values:
+        - `'cjs'`: the CommonJS format.
+        - `'umd'`: the UMD format.
+        - `'esm'`: the ES module format.
+      
+      If this field is not specified, the default value is `['cjs', 'esm']`.
+    - `exports`: What export mode to use. It can be one of the following values:
+       - `'auto'`: the rollup will guess your intentions based on what the input
+         module exports.
+       - `'default'`: if you are only exporting one thing using
+         `export default ...`; note that this can cause issues when generating
+         CommonJS output that is meant to be interchangeable with ESM output.
+       - `'named'`: if you are using named exports.
+       - `'none'`: if you are not exporting anything (e.g. you are building an
+         app, not a library).
+
+      If this field is not specified, the default value is `'auto'`.
+      See [output.exports](https://rollupjs.org/guide/en/#exports) for more details.
     - `nodeEnv` (string): The `NODE_ENV` environment variable. If this field is 
       not specified, the default value is `process.env.NODE_ENV`.
     - `minify` (boolean): Whether to minify the code. If this field is not 

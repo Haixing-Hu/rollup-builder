@@ -6,7 +6,7 @@
 //    All rights reserved.
 //
 ////////////////////////////////////////////////////////////////////////////////
-import rollupBuilder from './src/index.mjs';
+import rollupBuilder from './src/./index.mjs';
 
 export default rollupBuilder('RollupBuilder', import.meta.url, {
   input: 'src/index.mjs',
