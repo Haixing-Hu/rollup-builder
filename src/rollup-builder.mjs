@@ -25,18 +25,6 @@ import getRollupPlugins from './get-rollup-plugins.mjs';
  *     - `'esm'`: the ES module format.
  *
  *   If this field is not specified, the default value is `['cjs', 'esm']`.
- * - `exports`: What export mode to use. It can be one of the following values:
- *     - `'auto'`: the rollup will guess your intentions based on what the input
- *       module exports.
- *     - `'default'`: if you are only exporting one thing using
- *       `export default ...`; note that this can cause issues when generating
- *       CommonJS output that is meant to be interchangeable with ESM output.
- *     - `'named'`: if you are using named exports.
- *     - `'none'`: if you are not exporting anything (e.g. you are building an
- *       app, not a library).
- *
- *   If this field is not specified, the default value is `'auto'`.
- *   See [output.exports](https://rollupjs.org/guide/en/#exports) for more details.
  * - `nodeEnv`: the value of the `NODE_ENV` environment variable. If this field
  *   is not specified, the default value is `process.env.NODE_ENV`.
  * - `minify`: whether to minify the code. If this field is not specified, the
@@ -121,7 +109,7 @@ import getRollupPlugins from './get-rollup-plugins.mjs';
  *     The name of the library, which will be used as the name of the global
  *     variable in the UMD format. It should in the camel case.
  * @param {string} importMetaUrl
- *     The URL of the import.meta of the caller module. It **MUST** be passed
+ *     The URL of the `import.meta` of the caller module. It **MUST** be passed
  *     with the `import.meta.url` of the caller module.
  * @param {object} options
  *     The additional options for building the library, as described above.

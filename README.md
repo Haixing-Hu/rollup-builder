@@ -16,6 +16,7 @@ formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
 - [Installation](#installation)
 - [Usage](#usage)
 - [Configuration Options](#configuration)
+- [Mixing Default and Named Exports](#mix-default-named)
 - [Contributions](#contributions)
 - [License](#license)
 
@@ -26,6 +27,9 @@ formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
 - Minify your library for production use with ease.
 - Automatic generation of sourcemaps for debugging.
 - Configure the library's format, filename, and more using simple options.
+- You can [mix default and named exports](#mix-default-named) in ESM modules and 
+  the rollup will generate code in CJS or UMD format that compatible with both
+  CommonJS and ES6.
 - Highly customizable using Rollup plugins and custom configurations.
 
 ## <span id="installation">Installation</span>
@@ -127,18 +131,6 @@ yarn add @haixing_hu/rollup-builder --dev
         - `'esm'`: the ES module format.
       
       If this field is not specified, the default value is `['cjs', 'esm']`.
-    - `exports`: What export mode to use. It can be one of the following values:
-       - `'auto'`: the rollup will guess your intentions based on what the input
-         module exports.
-       - `'default'`: if you are only exporting one thing using
-         `export default ...`; note that this can cause issues when generating
-         CommonJS output that is meant to be interchangeable with ESM output.
-       - `'named'`: if you are using named exports.
-       - `'none'`: if you are not exporting anything (e.g. you are building an
-         app, not a library).
-
-      If this field is not specified, the default value is `'auto'`.
-      See [output.exports](https://rollupjs.org/guide/en/#exports) for more details.
     - `nodeEnv` (string): The `NODE_ENV` environment variable. If this field is 
       not specified, the default value is `process.env.NODE_ENV`.
     - `minify` (boolean): Whether to minify the code. If this field is not 
@@ -177,7 +169,7 @@ yarn add @haixing_hu/rollup-builder --dev
       plugin. If this field is not specified, the default value is:
       ```js
       {
-        include: ['node_modules/**'],
+        include: ['node_modules/**']
       }
       ```
     - `useBabelPlugin` (boolean): whether to use the `@rollup/plugin-babel` plugin.
@@ -193,7 +185,7 @@ yarn add @haixing_hu/rollup-builder --dev
         ],
         plugins: [
           '@babel/plugin-transform-runtime',
-        ],
+        ]
       }
       ```
       Note that if use the `@rollup/plugin-babel` plugin, you can also specify
@@ -217,6 +209,50 @@ yarn add @haixing_hu/rollup-builder --dev
     - `plugins` (\[object\]): the additional Rollup plugins. If this field is not
       specified, the default value is an empty array.
 
+## <span id="mix-default-named">Mixing Default and Named Exports</span>
+
+If an ESM module has both default export and named exports, the rollup cannot
+handle it correctly. For example, the following is a source ESM module:
+```js
+export { Foo, Bar };
+export default Foo;
+```
+The rollup will translate it into the following codes:
+```js
+exports.Foo = Foo;
+exports.Bar = Bar;
+exports.default = Foo;
+```
+However, a common-js consumer will use the module as follows:
+```js
+const Foo = require('my-module');
+```
+which will cause an error. The correct usage should be
+```js
+const Foo = require('my-module').default
+```
+But unfortunately, the rollup will translate the ESM default import as follows:
+```js
+// source
+import Foo from 'my-module';
+
+// translated
+const Foo = require('my-module');
+```
+Note that the above translation has no `.default` suffix, which will cause an error.
+
+The workaround is copied from the [source code of the official rollup plugins].
+It adds a simple footer statements to each `CJS` format bundle:
+```js
+module.exports = Object.assign(exports.default, exports);
+```
+
+See the following web pages for more details:
+- [Rollup Configuration Options: output.exports]
+- [Issue #1961 Question regarding mixing default and named exports]
+- [StackOverflow: Mixing default and named exports with Rollup]
+- [Github Repository: rollup-patch-seamless-default-export]
+
 ## <span id="contributions">Contributions</span>
 
 Contributions are welcome! If you find any issues or have suggestions for
@@ -226,3 +262,10 @@ improvements, please feel free to open an issue or create a pull request.
 
 This project is licensed under the Apache 2.0 License. 
 See the [LICENSE](LICENSE) file for details.
+
+
+[source code of the official rollup plugins]: https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
+[Rollup Configuration Options: output.exports]: https://rollupjs.org/configuration-options/#output-exports
+[Issue #1961 Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961
+[StackOverflow: Mixing default and named exports with Rollup]: https://stackoverflow.com/questions/58246998/mixing-default-and-named-exports-with-rollup
+[Github Repository: rollup-patch-seamless-default-export]: https://github.com/avisek/rollup-patch-seamless-default-export

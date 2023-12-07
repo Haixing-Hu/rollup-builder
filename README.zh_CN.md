@@ -15,6 +15,7 @@ Definition (UMD) 格式，可以选择是否进行代码压缩。
 - [安装](#installation)
 - [使用](#usage)
 - [配置选项](#configuration)
+- [混合默认导出和命名导出](#mix-default-named)
 - [贡献](#contributions)
 - [许可证](#license)
 
@@ -24,6 +25,8 @@ Definition (UMD) 格式，可以选择是否进行代码压缩。
 - 轻松进行生产环境下的代码压缩。
 - 自动生成用于调试的源映射。
 - 使用简单的选项配置库的格式、文件名等。
+- 您可以在 ESM（ES6 模块系统）模块中[混合使用默认导出和命名导出](#mix-default-named)，
+  并且 Rollup 将生成同时与 CommonJS 和 ES6 兼容的 CJS 或 UMD 格式代码。
 - 支持通过 Rollup 插件和自定义配置高度定制。
 
 ## <span id="installation">安装</span>
@@ -118,15 +121,6 @@ yarn add @haixing_hu/rollup-builder --dev
       - `'esm'`: ES 模块格式。
       
     如果未指定此字段，默认值为 `['cjs', 'esm']`。
-  - `exports`：使用哪种导出模式。可以是以下值之一：
-      - `'auto'`：Rollup 将根据输入模块导出的内容来猜测你的意图。
-      - `'default'`：如果你只使用 `export default ...` 导出一个东西；请注意，这在生成旨
-        在与 ESM 输出互换的 CommonJS 输出时可能会导致问题。
-      - `'named'`：如果你使用命名导出。
-      - `'none'`：如果你没有导出任何东西（例如，你正在构建一个应用程序，而不是库）。
-    
-    如果未指定此字段，默认值为 `'auto'`。
-    有关更多详细信息，请参阅 [output.exports](https://rollupjs.org/guide/en/#exports)。
   - `nodeEnv`（字符串）：`NODE_ENV` 环境变量。如果未指定此字段，默认值为 `process.env.NODE_ENV`。
   - `minify`（布尔值）：是否对代码进行压缩。如果未指定此字段，对于生产环境，默认值为 `true`，否则为 `false`。
   - `sourcemap`（布尔值）：是否生成源映射。如果未指定此字段，默认值为 `true`。
@@ -184,6 +178,47 @@ yarn add @haixing_hu/rollup-builder --dev
   ```
   - `plugins`（对象数组）：额外的 Rollup 插件。如果未指定此字段，默认值为空数组。
 
+## <span id="mix-default-named">混合默认导出和命名导出</span>
+
+如果一个 ESM（ES6 模块系统）模块同时具有默认导出和命名导出，Rollup 无法正确处理它。
+例如，以下是一个 ESM 模块源码：
+```js
+export { Foo, Bar };
+export default Foo;
+```
+Rollup 会将其转换为以下代码：
+```js
+exports.Foo = Foo;
+exports.Bar = Bar;
+exports.default = Foo;
+```
+然而，一个 CommonJS 代码模块通常会这样使用该模块：
+```js
+const Foo = require('my-module');
+```
+这将导致一个错误。正确的用法应该是
+```js
+const Foo = require('my-module').default
+```
+但不幸的是，Rollup 会将 ESM 默认导入转换为以下形式：
+```js
+// 源代码
+import Foo from 'my-module';
+// 转换后
+const Foo = require('my-module');
+```
+注意，上述转换没有 `.default` 后缀，这将导致错误。
+
+解决办法来自 [Rollup 官方插件的源代码]，为每个 `CJS` 格式的包添加一个简单的`output.footer`：
+```js
+module.exports = Object.assign(exports.default, exports);
+```
+
+有关更多详细信息，请参阅以下网页：
+- [Rollup Configuration Options: output.exports]
+- [Issue #1961 Question regarding mixing default and named exports]
+- [StackOverflow: Mixing default and named exports with Rollup]
+- [Github Repository: rollup-patch-seamless-default-export]
 
 ## <span id="contributions">贡献</span>
 
@@ -192,3 +227,10 @@ yarn add @haixing_hu/rollup-builder --dev
 ## <span id="license">许可证</span>
 
 本项目根据 Apache 2.0 许可证进行许可。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
+
+
+[Rollup 官方插件的源代码]: https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
+[Rollup Configuration Options: output.exports]: https://rollupjs.org/configuration-options/#output-exports
+[Issue #1961 Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961
+[StackOverflow: Mixing default and named exports with Rollup]: https://stackoverflow.com/questions/58246998/mixing-default-and-named-exports-with-rollup
+[Github Repository: rollup-patch-seamless-default-export]: https://github.com/avisek/rollup-patch-seamless-default-export
