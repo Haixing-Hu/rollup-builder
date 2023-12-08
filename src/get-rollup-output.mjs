@@ -84,6 +84,9 @@ function getRollupOutput(format, libraryName, options) {
       break;
     case 'esm':
       filenameExt = '.mjs';
+      if (exports === 'mixed') {
+        exports = 'auto';
+      }
       break;
     default:
       throw new Error(`Unsupported library format: ${format}`);
