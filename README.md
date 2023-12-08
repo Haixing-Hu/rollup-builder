@@ -317,6 +317,6 @@ See the [LICENSE](LICENSE) file for details.
 [Rollup]: https://rollupjs.org/
 [source code of the official rollup plugins]: https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
 [Rollup Configuration Options: output.exports]: https://rollupjs.org/configuration-options/#output-exports
-[Issue #1961 Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961
+[Issue #1961: Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961
 [StackOverflow: Mixing default and named exports with Rollup]: https://stackoverflow.com/questions/58246998/mixing-default-and-named-exports-with-rollup
 [Github Repository: rollup-patch-seamless-default-export]: https://github.com/avisek/rollup-patch-seamless-default-export
