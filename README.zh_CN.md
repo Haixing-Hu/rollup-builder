@@ -111,7 +111,7 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="configuration">配置选项</span>
 
-- `libraryName: string`：你的库的名称（在 UMD 格式中使用）。
+- `libraryName: string`：您的库的名称（在 UMD 格式中使用）。
 - `importMetaUrl: string`：调用者模块的 `import.meta.url`。
 - `options: object`：额外的构建选项，包括：
   - `debug: boolean`：是否启用调试模式。如果未指定此字段，默认值为 `false`。
@@ -170,7 +170,7 @@ yarn add @haixing_hu/rollup-builder --dev
       ],
     }
     ```
-    请注意，如果使用 `@rollup/plugin-babel` 插件，你还可以在标准的 Babel 配置文件中指定 
+    请注意，如果使用 `@rollup/plugin-babel` 插件，您还可以在标准的 Babel 配置文件中指定 
     Babel 的配置，例如 `babel.config.js`、`.babelrc` 等。
   - `terserOptions: object`（对象）：`@rollup/plugin-terser` 插件的选项。如果未指定此字段，
     默认值为：`{}`。是否使用 `@rollup/plugin-terser` 插件取决于选项的 `minify` 字段或 
@@ -218,6 +218,16 @@ import Foo from 'my-module';
 const Foo = require('my-module');
 ```
 注意，上述转换没有 `.default` 后缀，这将导致错误。
+
+如果您在 ESM 模块中同时使用默认导出和命名导出，[Rollup] 将生成下述警告消息：
+```bash
+(!) Mixing named and default exports
+https://rollupjs.org/configuration-options/#output-exports
+The following entry modules are using named and default exports together:
+src/index.js
+
+Consumers of your bundle will have to use chunk.default to access their default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+```
 
 解决办法来自 [Rollup 官方插件的源代码]，为每个 `CJS` 格式的包添加一个简单的`output.footer`：
 ```js

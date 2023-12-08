@@ -258,6 +258,17 @@ const Foo = require('my-module');
 ```
 Note that the above translation has no `.default` suffix, which will cause an error.
 
+If you mix default and named exports in an ESM module, [Rollup] will generate
+a warning message as follows:
+```bash
+(!) Mixing named and default exports
+https://rollupjs.org/configuration-options/#output-exports
+The following entry modules are using named and default exports together:
+src/index.js
+
+Consumers of your bundle will have to use chunk.default to access their default export, which may not be what you want. Use `output.exports: "named"` to disable this warning.
+```
+
 The workaround is copied from the [source code of the official rollup plugins].
 It makes the rollup option `output.exports` to `'named'` and adds a simple footer 
 statements to each `CJS` format bundle:
