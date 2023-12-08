@@ -285,7 +285,7 @@ module.exports = Object.assign(exports.default, exports);
 Thus, the caller can directly use the following methods to import the default export:
 ```js
 const Foo = require('my-module');
-// 或
+// or
 import Foo from 'my-module';
 ```
 
