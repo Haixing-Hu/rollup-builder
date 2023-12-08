@@ -5,7 +5,7 @@
 [![English Document](https://img.shields.io/badge/Document-English-blue.svg)](README.md)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
 
-`rollup-builder` 提供了一个工具函数，用于简化使用 Rollup 打包器构建 JavaScript 库的过程。
+`rollup-builder` 提供了一个工具函数，用于简化使用 [Rollup] 打包器构建 JavaScript 库的过程。
 它允许您生成多种格式，如 CommonJS (CJS)、ES Module (ESM) 和 Universal Module 
 Definition (UMD) 格式，可以选择是否进行代码压缩。
 
@@ -26,8 +26,8 @@ Definition (UMD) 格式，可以选择是否进行代码压缩。
 - 自动生成用于调试的源映射。
 - 使用简单的选项配置库的格式、文件名等。
 - 您可以在 ESM（ES6 模块系统）模块中[混合使用默认导出和命名导出](#mix-default-named)，
-  并且 Rollup 将生成同时与 CommonJS 和 ES6 兼容的 CJS 或 UMD 格式代码。
-- 支持通过 Rollup 插件和自定义配置高度定制。
+  并且 [Rollup] 将生成同时与 CommonJS 和 ES6 兼容的 CJS 或 UMD 格式代码。
+- 支持通过 [Rollup] 插件和自定义配置高度定制。
 
 ## <span id="installation">安装</span>
 
@@ -41,12 +41,12 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="usage">使用</span>
 
-1. 创建一个 Rollup 配置文件（通常命名为 `rollup.config.mjs`），并导出一个函数，该函数定义了库的构建选项。
+1. 创建一个 [Rollup] 配置文件（通常命名为 `rollup.config.mjs`），并导出一个函数，该函数定义了库的构建选项。
    您可以使用提供的 `rollupBuilder` 函数来简化此过程。
 
    示例 `rollup.config.mjs`：
 
-   ```javascript
+   ```js
    import rollupBuilder from '@haixing_hu/rollup-builder';
 
    export default rollupBuilder('MyLibrary', import.meta.url);
@@ -57,7 +57,7 @@ yarn add @haixing_hu/rollup-builder --dev
 
    示例 `rollup.config.mjs`：
 
-   ```javascript
+   ```js
    import rollupBuilder from '@haixing_hu/rollup-builder';
     
    export default rollupBuilder('MyLibrary', import.meta.url, {
@@ -67,7 +67,7 @@ yarn add @haixing_hu/rollup-builder --dev
    });
    ```
 
-3. 使用以下命令运行 Rollup 构建过程：
+3. 使用以下命令运行 [Rollup] 构建过程：
 
    ```bash
    rollup -c rollup.config.mjs
@@ -111,76 +111,86 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="configuration">配置选项</span>
 
-- `libraryName`（字符串）：你的库的名称（在 UMD 格式中使用）。
-- `importMetaUrl`（字符串）：调用者模块的 `import.meta.url`。
-- `options`（对象）：额外的构建选项，包括：
-  - `debug` （布尔值）：是否启用调试模式。如果未指定此字段，默认值为 `false`。
-  - `formats`（字符串数组）：构建的格式数组。它可以是以下值的数组： 
+- `libraryName: string`：你的库的名称（在 UMD 格式中使用）。
+- `importMetaUrl: string`：调用者模块的 `import.meta.url`。
+- `options: object`：额外的构建选项，包括：
+  - `debug: boolean`：是否启用调试模式。如果未指定此字段，默认值为 `false`。
+  - `formats: [string]`：构建的格式数组。它可以是以下值的数组： 
       - `'cjs'`: CommonJS 格式。
       - `'umd'`: UMD 格式。
       - `'esm'`: ES 模块格式。
       
     如果未指定此字段，默认值为 `['cjs', 'esm']`。
-  - `nodeEnv`（字符串）：`NODE_ENV` 环境变量。如果未指定此字段，默认值为 `process.env.NODE_ENV`。
-  - `minify`（布尔值）：是否对代码进行压缩。如果未指定此字段，对于生产环境，默认值为 `true`，否则为 `false`。
-  - `sourcemap`（布尔值）：是否生成源映射。如果未指定此字段，默认值为 `true`。
-  - `input`（字符串）：库的输入文件。如果未指定此字段，默认值为 `'src/index.js'`。
-  - `outputDir`（字符串）：库的输出目录。如果未指定此字段，默认值为 `'dist'`。
-  - `filenamePrefix`（字符串）：输出文件的前缀。如果未指定此字段，默认值为库名称的短横线形式。
-  - `externals`（字符串数组）：额外的外部包，每个可以通过字符串或正则表达式指定。如果未指定此字段，默认值为空数组。
-  - `useAliasPlugin`（布尔值）：是否使用 `@rollup/plugin-alias` 插件。如果未指定此字段，默认值为 `true`。
-  - `aliasPluginOptions`（对象）：`@rollup/plugin-alias` 插件的选项。如果未指定此字段，默认值为：
-  ```js
-  {
-    entries: {
-      'src': fileURLToPath(new URL('src', importMetaUrl)),
-    },
-  }
-  ```
-  - `useNodeResolvePlugin`（布尔值）：是否使用 `@rollup/plugin-node-resolve` 插件。如果未指定此字段，默认值为 `true`。
-  - `nodeResolvePluginOptions`（对象）：`@rollup/plugin-node-resolve` 插件的选项。如果未指定此字段，默认值为：`{}`。
-  - `useCommonjsPlugin`（布尔值）：是否使用 `@rollup/plugin-commonjs` 插件。如果未指定此字段，默认值为 `true`。
-  - `commonjsPluginOptions`（对象）：`@rollup/plugin-commonjs` 插件的选项。如果未指定此字段，默认值为：
-  ```js
-  {
-    include: ['node_modules/**'],
-  }
-  ```
-  - `useBabelPlugin`（布尔值）：是否使用 `@rollup/plugin-babel` 插件。如果未指定此字段，默认值为 `true`。
-  - `babelPluginOptions`（对象）：`@rollup/plugin-babel` 插件的选项。如果未指定此字段，默认值为：
-  ```js
-  {
-    babelHelpers: 'runtime',
-    exclude: ['node_modules/**'],
-    presets: [
-      '@babel/preset-env',
-    ],
-    plugins: [
-      '@babel/plugin-transform-runtime',
-    ],
-  }
-  ```
-  请注意，如果使用 `@rollup/plugin-babel` 插件，你还可以在标准的 Babel 配置文件中指定 
-  Babel 的配置，例如 `babel.config.js`、`.babelrc` 等。
-  - `terserOptions`（对象）：`@rollup/plugin-terser` 插件的选项。如果未指定此字段，
-  默认值为：`{}`。是否使用 `@rollup/plugin-terser` 插件取决于选项的 `minify` 字段或 
-  `NODE_ENV` 环境变量。
-  - `useAnalyzerPlugin`（布尔值）：是否使用 `rollup-plugin-analyzer` 插件。
-  如果未指定此字段，默认值为 `true`。
-  - `analyzerOptions`（对象）：`rollup-plugin-analyzer` 插件的选项。
-  如果未指定此字段，默认值为：
-  ```js
-  {
-    hideDeps: true,
-    limit: 0,
-    summaryOnly: true,
-  }
-  ```
-  - `plugins`（对象数组）：额外的 Rollup 插件。如果未指定此字段，默认值为空数组。
+  - `exports: string`：要使用的导出模式。它可以是以下值之一：
+      - `'auto'`：根据输入模块导出的内容自动猜测您的意图。
+      - `'default'`：如果您只使用`export default ...`导出一个事物；请注意，这可能在生成旨在与ESM输出互换的
+        CommonJS输出时引起问题。
+      - `'named'`：如果您使用命名导出。
+      - `'none'`：如果您没有导出任何东西（例如，您正在构建一个应用程序，而不是库）。
+      - `'mixed'`：如果您使用命名导出与默认导出混合。请注意，这不是 [Rollup] 官方支持的标准导出模式，而是此库添加的附加模式。
+        有关更多详情，请参阅[混合默认和命名导出](#mix-default-named)。
+    
+    如果未指定此字段，默认值为`'auto'`。
+  - `nodeEnv: string`：`NODE_ENV` 环境变量。如果未指定此字段，默认值为 `process.env.NODE_ENV`。
+  - `minify: boolean`：是否对代码进行压缩。如果未指定此字段，对于生产环境，默认值为 `true`，否则为 `false`。
+  - `sourcemap: boolean`：是否生成源映射。如果未指定此字段，默认值为 `true`。
+  - `input: string`：库的输入文件。如果未指定此字段，默认值为 `'src/index.js'`。
+  - `outputDir: string`：库的输出目录。如果未指定此字段，默认值为 `'dist'`。
+  - `filenamePrefix: string`：输出文件的前缀。如果未指定此字段，默认值为库名称的短横线形式。
+  - `externals: [string]`：额外的外部包，每个可以通过字符串或正则表达式指定。如果未指定此字段，默认值为空数组。
+  - `useAliasPlugin: boolean`：是否使用 `@rollup/plugin-alias` 插件。如果未指定此字段，默认值为 `true`。
+  - `aliasPluginOptions: object`：`@rollup/plugin-alias` 插件的选项。如果未指定此字段，默认值为：
+    ```js
+    {
+      entries: {
+        'src': fileURLToPath(new URL('src', importMetaUrl)),
+      },
+    }
+    ```
+  - `useNodeResolvePlugin: boolean`：是否使用 `@rollup/plugin-node-resolve` 插件。如果未指定此字段，默认值为 `true`。
+  - `nodeResolvePluginOptions: object`：`@rollup/plugin-node-resolve` 插件的选项。如果未指定此字段，默认值为：`{}`。
+  - `useCommonjsPlugin: boolean`：是否使用 `@rollup/plugin-commonjs` 插件。如果未指定此字段，默认值为 `true`。
+  - `commonjsPluginOptions: object`：`@rollup/plugin-commonjs` 插件的选项。如果未指定此字段，默认值为：
+    ```js
+    {
+      include: ['node_modules/**'],
+    }
+    ```
+  - `useBabelPlugin: boolean`：是否使用 `@rollup/plugin-babel` 插件。如果未指定此字段，默认值为 `true`。
+  - `babelPluginOptions: object`：`@rollup/plugin-babel` 插件的选项。如果未指定此字段，默认值为：
+    ```js
+    {
+      babelHelpers: 'runtime',
+      exclude: ['node_modules/**'],
+      presets: [
+        '@babel/preset-env',
+      ],
+      plugins: [
+        '@babel/plugin-transform-runtime',
+      ],
+    }
+    ```
+    请注意，如果使用 `@rollup/plugin-babel` 插件，你还可以在标准的 Babel 配置文件中指定 
+    Babel 的配置，例如 `babel.config.js`、`.babelrc` 等。
+  - `terserOptions: object`（对象）：`@rollup/plugin-terser` 插件的选项。如果未指定此字段，
+    默认值为：`{}`。是否使用 `@rollup/plugin-terser` 插件取决于选项的 `minify` 字段或 
+    `NODE_ENV` 环境变量。
+  - `useAnalyzerPlugin: boolean`（布尔值）：是否使用 `rollup-plugin-analyzer` 插件。
+    如果未指定此字段，默认值为 `true`。
+  - `analyzerOptions: object`（对象）：`rollup-plugin-analyzer` 插件的选项。
+    如果未指定此字段，默认值为：
+    ```js
+    {
+      hideDeps: true,
+      limit: 0,
+      summaryOnly: true,
+    }
+    ```
+  - `plugins`（对象数组）：额外的 [Rollup] 插件。如果未指定此字段，默认值为空数组。
 
 ## <span id="mix-default-named">混合默认导出和命名导出</span>
 
-如果一个 ESM（ES6 模块系统）模块同时具有默认导出和命名导出，Rollup 无法正确处理它。
+如果一个 ESM（ES6 模块系统）模块同时具有默认导出和命名导出，[Rollup] 无法正确处理它。
 例如，以下是一个 ESM 模块源码：
 ```js
 export { Foo, Bar };
@@ -200,7 +210,7 @@ const Foo = require('my-module');
 ```js
 const Foo = require('my-module').default
 ```
-但不幸的是，Rollup 会将 ESM 默认导入转换为以下形式：
+但不幸的是，[Rollup] 会将 ESM 默认导入转换为以下形式：
 ```js
 // 源代码
 import Foo from 'my-module';
@@ -213,12 +223,32 @@ const Foo = require('my-module');
 ```js
 module.exports = Object.assign(exports.default, exports);
 ```
+这样 [Rollup] 会将混合输出转换为以下形式：
+```js
+exports.Foo = Foo;
+exports.Bar = Bar;
+exports.default = Foo;
+module.exports = Object.assign(exports.default, exports);
+```
+于是调用者可以直接使用下面方式引入默认导出：
+```js
+const Foo = require('my-module');
+// 或
+import Foo from 'my-module';
+```
 
 有关更多详细信息，请参阅以下网页：
 - [Rollup Configuration Options: output.exports]
-- [Issue #1961 Question regarding mixing default and named exports]
+- [Issue #1961: Question regarding mixing default and named exports]
 - [StackOverflow: Mixing default and named exports with Rollup]
 - [Github Repository: rollup-patch-seamless-default-export]
+
+**注意：** 为了使用此特性，您必须在 `rollup.config.mjs` 文件中指定 `exports: 'mixed'` 选项，即：
+```js
+import rollupBuilder from '@haixing_hu/rollup-builder';
+
+export default rollupBuilder('MyLibrary', import.meta.url, { exports: 'mixed' });
+```
 
 ## <span id="contributions">贡献</span>
 
@@ -228,7 +258,7 @@ module.exports = Object.assign(exports.default, exports);
 
 本项目根据 Apache 2.0 许可证进行许可。有关详细信息，请参阅 [LICENSE](LICENSE) 文件。
 
-
+[Rollup]: https://rollupjs.org/
 [Rollup 官方插件的源代码]: https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
 [Rollup Configuration Options: output.exports]: https://rollupjs.org/configuration-options/#output-exports
 [Issue #1961 Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961

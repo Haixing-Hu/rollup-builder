@@ -6,7 +6,7 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
 
 `rollup-builder` provides a utility function to simplify the process of building 
-JavaScript libraries using the Rollup bundler. It allows you to generate various 
+JavaScript libraries using the [Rollup] bundler. It allows you to generate various 
 formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
 (UMD), and gives you the option to choose whether to perform code minification.
 
@@ -28,9 +28,9 @@ formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
 - Automatic generation of sourcemaps for debugging.
 - Configure the library's format, filename, and more using simple options.
 - You can [mix default and named exports](#mix-default-named) in ESM modules and 
-  the rollup will generate code in CJS or UMD format that compatible with both
+  the [Rollup] will generate code in CJS or UMD format that compatible with both
   CommonJS and ES6.
-- Highly customizable using Rollup plugins and custom configurations.
+- Highly customizable using [Rollup] plugins and custom configurations.
 
 ## <span id="installation">Installation</span>
 
@@ -44,13 +44,13 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="usage">Usage</span>
 
-1. Create a Rollup configuration file (usually named `rollup.config.mjs`) and 
+1. Create a [Rollup] configuration file (usually named `rollup.config.mjs`) and 
    export a function that defines the library's build options. You can use the 
    provided `rollupBuilder` function to streamline this process.
 
    Example `rollup.config.mjs`:
 
-   ```javascript
+   ```js
    import rollupBuilder from '@haixing_hu/rollup-builder';
 
    export default rollupBuilder('MyLibrary', import.meta.url);
@@ -63,7 +63,7 @@ yarn add @haixing_hu/rollup-builder --dev
 
    Example `rollup.config.mjs`:
     
-   ```javascript
+   ```js
    import rollupBuilder from '@haixing_hu/rollup-builder';
     
    export default rollupBuilder('MyLibrary', import.meta.url, {
@@ -73,7 +73,7 @@ yarn add @haixing_hu/rollup-builder --dev
    });
    ```
 
-3. Run the Rollup build process using the following command:
+3. Run the [Rollup] build process using the following command:
 
    ```bash
    rollup -c rollup.config.mjs
@@ -119,38 +119,55 @@ yarn add @haixing_hu/rollup-builder --dev
 
 ## <span id="configuration">Configuration Options</span>
 
-- `libraryName` (string): The name of your library (used in the UMD format).
-- `importMetaUrl` (string): The `import.meta.url` of the caller module.
-- `options` (object): Additional build options, including:
-    - `debug` (boolean): Whether to print debug information. If this field is not
+- `libraryName: string`: The name of your library (used in the UMD format).
+- `importMetaUrl: string`: The `import.meta.url` of the caller module.
+- `options: object`: Additional build options, including:
+    - `debug: boolean`: Whether to print debug information. If this field is not
       specified, the default value is `false`.
-    - `formats` (\[string\]): An array of formats to build. It can be an array 
+    - `formats: [string]`: An array of formats to build. It can be an array 
       of the following values:
         - `'cjs'`: the CommonJS format.
         - `'umd'`: the UMD format.
         - `'esm'`: the ES module format.
       
       If this field is not specified, the default value is `['cjs', 'esm']`.
-    - `nodeEnv` (string): The `NODE_ENV` environment variable. If this field is 
+    - `exports: string`: the export mode to use. It can be one of the following
+      values:
+        - `'auto'`: automatically guesses your intentions based on what the 
+          input module exports.
+        - `'default'`: if you are only exporting one thing using
+          `export default ...`; note that this can cause issues when generating 
+          CommonJS output that is meant to be interchangeable with ESM output.
+        - `'named'`: if you are using named exports.
+        - `'none'`: if you are not exporting anything (e.g. you are building an
+          app, not a library)
+        - `'mixed'`: if you are using named exports mixed with a default export.
+          Note that this is not a standard exports mode officially supported by
+          [Rollup], instead, it is an additional mode add by this library.
+          Refer to the [Mixing Default and Named Exports](#mix-default-named) for
+          more details.
+      
+      If this field is not specified, the default value is `'auto'`.
+    - `nodeEnv: string`: The `NODE_ENV` environment variable. If this field is 
       not specified, the default value is `process.env.NODE_ENV`.
-    - `minify` (boolean): Whether to minify the code. If this field is not 
+    - `minify: boolean`: Whether to minify the code. If this field is not 
       specified, the default value will be `true` for production environment, 
       and `false` otherwise.
-    - `sourcemap` (boolean): Whether to generate sourcemaps. If this field is not
+    - `sourcemap: boolean`: Whether to generate sourcemaps. If this field is not
       specified, the default value is `true`.
-    - `input` (string): The input file of the library. If this field is not
+    - `input: string`: The input file of the library. If this field is not
       specified, the default value is `src/index.js`.
-    - `outputDir` (string): The output directory of the library. If this field 
+    - `outputDir: string`: The output directory of the library. If this field 
       is not specified, the default value is `dist`.
-    - `filenamePrefix` (string): The prefix for the output filename. If this 
+    - `filenamePrefix: string`: The prefix for the output filename. If this 
       field is not specified, the default value the dash-case of the library 
       name.
-    - `externals` (\[string\]): the additional external packages, each can be 
+    - `externals: [string]`: the additional external packages, each can be 
       specified with either a string or a regular expression. If this field is
       not specified, the default value is an empty array.
-    - `useAliasPlugin` (boolean): whether to use the `@rollup/plugin-alias` 
+    - `useAliasPlugin: boolean`: whether to use the `@rollup/plugin-alias` 
       plugin. If this field is not specified, the default value is `true`.
-    - `aliasPluginOptions` (object): the options for the `@rollup/plugin-alias` 
+    - `aliasPluginOptions: object`: the options for the `@rollup/plugin-alias` 
       plugin. If this field is not specified, the default value is:
       ```js
       {
@@ -159,22 +176,22 @@ yarn add @haixing_hu/rollup-builder --dev
         },
       }
       ```
-    - `useNodeResolvePlugin` (boolean): whether to use the `@rollup/plugin-node-resolve`
+    - `useNodeResolvePlugin: boolean`: whether to use the `@rollup/plugin-node-resolve`
       plugin. If this field is not specified, the default value is `true`.
-    - `nodeResolvePluginOptions` (object): the options for the `@rollup/plugin-node-resolve`
+    - `nodeResolvePluginOptions: object`: the options for the `@rollup/plugin-node-resolve`
       plugin. If this field is not specified, the default value is: `{}`.
-    - `useCommonjsPlugin` (boolean): whether to use the `@rollup/plugin-commonjs` plugin.
+    - `useCommonjsPlugin: boolean`: whether to use the `@rollup/plugin-commonjs` plugin.
       If this field is not specified, the default value is `true`.
-    - `commonjsPluginOptions` (object): the options for the `@rollup/plugin-commonjs`
+    - `commonjsPluginOptions: object`: the options for the `@rollup/plugin-commonjs`
       plugin. If this field is not specified, the default value is:
       ```js
       {
         include: ['node_modules/**']
       }
       ```
-    - `useBabelPlugin` (boolean): whether to use the `@rollup/plugin-babel` plugin.
+    - `useBabelPlugin: boolean`: whether to use the `@rollup/plugin-babel` plugin.
       If this field is not specified, the default value is `true`.
-    - `babelPluginOptions` (object): the options for the `@rollup/plugin-babel` plugin.
+    - `babelPluginOptions: object`: the options for the `@rollup/plugin-babel` plugin.
       If this field is not specified, the default value is:
       ```js
       {
@@ -191,13 +208,13 @@ yarn add @haixing_hu/rollup-builder --dev
       Note that if use the `@rollup/plugin-babel` plugin, you can also specify
       the configuration of Babel in the standard Babel configuration files,
       such as `babel.config.js`, `.babelrc`, etc.
-    - `terserOptions` (object): the options for the `@rollup/plugin-terser` plugin.
+    - `terserOptions: object`: the options for the `@rollup/plugin-terser` plugin.
       If this field is not specified, the default value is: `{}`. Whether
       to use the `@rollup/plugin-terser` plugin depends on the `minify`
       field of the options or the `NODE_ENV` environment variable.
-    - `useAnalyzerPlugin` (boolean): whether to use the `rollup-plugin-analyzer` plugin.
+    - `useAnalyzerPlugin: boolean`: whether to use the `rollup-plugin-analyzer` plugin.
       If this field is not specified, the default value is `true`.
-    - `analyzerOptions` (object): the options for the `rollup-plugin-analyzer` plugin.
+    - `analyzerOptions: object`: the options for the `rollup-plugin-analyzer` plugin.
       If this field is not specified, the default value is:
       ```js
       {
@@ -206,12 +223,12 @@ yarn add @haixing_hu/rollup-builder --dev
         summaryOnly: true,
       }
       ```
-    - `plugins` (\[object\]): the additional Rollup plugins. If this field is not
+    - `plugins: [object]`: the additional [Rollup] plugins. If this field is not
       specified, the default value is an empty array.
 
 ## <span id="mix-default-named">Mixing Default and Named Exports</span>
 
-If an ESM module has both default export and named exports, the rollup cannot
+If an ESM module has both default export and named exports, [Rollup] cannot
 handle it correctly. For example, the following is a source ESM module:
 ```js
 export { Foo, Bar };
@@ -231,7 +248,7 @@ which will cause an error. The correct usage should be
 ```js
 const Foo = require('my-module').default
 ```
-But unfortunately, the rollup will translate the ESM default import as follows:
+But unfortunately, [Rollup] will translate the ESM default import as follows:
 ```js
 // source
 import Foo from 'my-module';
@@ -242,16 +259,38 @@ const Foo = require('my-module');
 Note that the above translation has no `.default` suffix, which will cause an error.
 
 The workaround is copied from the [source code of the official rollup plugins].
-It adds a simple footer statements to each `CJS` format bundle:
+It makes the rollup option `output.exports` to `'named'` and adds a simple footer 
+statements to each `CJS` format bundle:
 ```js
 module.exports = Object.assign(exports.default, exports);
+```
+With this workaround, [Rollup] will transform mixed exports into the following form:
+```js
+exports.Foo = Foo;
+exports.Bar = Bar;
+exports.default = Foo;
+module.exports = Object.assign(exports.default, exports);
+```
+Thus, the caller can directly use the following methods to import the default export:
+```js
+const Foo = require('my-module');
+// 或
+import Foo from 'my-module';
 ```
 
 See the following web pages for more details:
 - [Rollup Configuration Options: output.exports]
-- [Issue #1961 Question regarding mixing default and named exports]
+- [Issue #1961: Question regarding mixing default and named exports]
 - [StackOverflow: Mixing default and named exports with Rollup]
 - [Github Repository: rollup-patch-seamless-default-export]
+
+**NOTE:** In order to use this feature, you must specify the `exports` option to
+`'mixed'` in the `rollup.config.mjs` file, i.e.,
+```js
+import rollupBuilder from '@haixing_hu/rollup-builder';
+
+export default rollupBuilder('MyLibrary', import.meta.url, { exports: 'mixed' });
+```
 
 ## <span id="contributions">Contributions</span>
 
@@ -264,6 +303,7 @@ This project is licensed under the Apache 2.0 License.
 See the [LICENSE](LICENSE) file for details.
 
 
+[Rollup]: https://rollupjs.org/
 [source code of the official rollup plugins]: https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
 [Rollup Configuration Options: output.exports]: https://rollupjs.org/configuration-options/#output-exports
 [Issue #1961 Question regarding mixing default and named exports]: https://github.com/rollup/rollup/issues/1961

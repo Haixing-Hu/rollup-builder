@@ -23,7 +23,7 @@
 function getRollupOutput(format, libraryName, options) {
   let filenameExt = '';
   let footer = '';
-  let exports = 'auto';
+  let exports = options.exports ?? 'auto';
   switch (format) {
     case 'cjs':       // drop down
     case 'umd':
@@ -77,8 +77,10 @@ function getRollupOutput(format, libraryName, options) {
       // [4] https://github.com/avisek/rollup-patch-seamless-default-export
       // [5] https://github.com/rollup/plugins/blob/master/shared/rollup.config.mjs
       //
-      exports = 'named';
-      footer = 'module.exports = Object.assign(exports.default, exports);';
+      if (exports === 'mixed') {
+        exports = 'named';
+        footer = 'module.exports = Object.assign(exports.default, exports);';
+      }
       break;
     case 'esm':
       filenameExt = '.mjs';
