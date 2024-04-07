@@ -186,6 +186,18 @@ yarn add @haixing_hu/rollup-builder --dev
       summaryOnly: true,
     }
     ```
+  - `useVisualizerPlugin: boolean`：是否使用`rollup-plugin-visualizer`插件。
+    如果未指定此字段，默认值为`true`。
+  - `visualizerPluginOptions: object`：`rollup-plugin-visualizer`插件的选项。
+    如果未指定此字段，默认值为：
+    ```js
+    {
+      filename: './doc/${filenameBase}.visualization.html',
+      gzipSize: true,
+      brotliSize: true,
+    }
+    ```
+    其中`filenameBase`是编译后的库文件在`./dist`目录中的基本名称。 
   - `plugins`（对象数组）：额外的 [Rollup] 插件。如果未指定此字段，默认值为空数组。
 
 ## <span id="mix-default-named">混合默认导出和命名导出</span>

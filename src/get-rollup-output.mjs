@@ -95,9 +95,21 @@ function getRollupOutput(format, libraryName, options) {
   const minify = options.minify ?? (nodeEnv === 'production');
   const camelCaseToDashCase = (s) => s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   const filenamePrefix = options.filenamePrefix ?? camelCaseToDashCase(libraryName);
-  const filename = `${filenamePrefix}.${format}${minify ? '.min' : ''}${filenameExt}`;
+  const filenameBase = `${filenamePrefix}.${format}${minify ? '.min' : ''}`;
+  const filename = `${filenameBase}${filenameExt}`;
   const outputDir = options.outputDir ?? 'dist';
   const sourcemap = options.sourcemap ?? true;
+  // save some configuration to the options object
+  options.format = format;
+  options.name = libraryName;
+  options.minify = minify;
+  options.filenamePrefix = filenamePrefix;
+  options.filenameBase = filenameBase;
+  options.filenameExt = filenameExt;
+  options.filename = filename;
+  options.exports = exports;
+  options.sourcemap = sourcemap;
+  options.outputDir = outputDir;
   return {
     name: libraryName,
     file: `${outputDir}/${filename}`,

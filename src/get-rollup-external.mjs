@@ -30,6 +30,9 @@ function getRollupExternal(importMetaUrl, options) {
   const peerPattern = (peers ? new RegExp(`^(${peers.join('|')})($|/)`) : null);
   // gets the additional external packages from the user passed options
   const additions = options.externals ?? [];
+  // save some configuration to the options object
+  options.peers = peers;
+  options.peerPattern = peerPattern;
   return (id) => {
     if (peerPattern && peerPattern.test(id)) {
       return true;

@@ -9,6 +9,7 @@
 import getRollupExternal from './get-rollup-external.mjs';
 import getRollupOutput from './get-rollup-output.mjs';
 import getRollupPlugins from './get-rollup-plugins.mjs';
+import getRollupOnWarn from './get-rollup-on-warn.mjs';
 
 /**
  * Builds the Rollup configuration for a library.
@@ -138,11 +139,12 @@ function rollupBuilder(libraryName, importMetaUrl, options = {}) {
   const result = [];
   const input = options.input ?? 'src/index.js';
   for (const format of formats) {
-    const output = getRollupOutput(format, libraryName, options);
-    const external = getRollupExternal(importMetaUrl, options);
-    const plugins = getRollupPlugins(format, importMetaUrl, options);
-    const config = { input, output, external, plugins };
-    // console.dir(config, { depth: null });
+    const clonedOptions = { ...options };
+    const output = getRollupOutput(format, libraryName, clonedOptions);
+    const external = getRollupExternal(importMetaUrl, clonedOptions);
+    const plugins = getRollupPlugins(format, importMetaUrl, clonedOptions);
+    const onwarn = getRollupOnWarn();
+    const config = { input, output, external, plugins, onwarn };
     result.push(config);
   }
   if (options.debug === true) {

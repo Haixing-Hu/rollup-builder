@@ -223,6 +223,19 @@ yarn add @haixing_hu/rollup-builder --dev
         summaryOnly: true,
       }
       ```
+    - `useVisualizerPlugin: boolean`: whether to use the `rollup-plugin-visualizer` plugin.
+      If this field is not specified, the default value is `true`.
+    - `visualizerPluginOptions: object`: the options for the `rollup-plugin-visualizer` plugin.
+      If this field is not specified, the default value is:
+      ```js
+      {
+        filename: './doc/${filenameBase}.visualization.html',
+        gzipSize: true,
+        brotliSize: true,
+      }
+      ```
+      where the `filenameBase` is the basename of the compiled library file in the
+      `./dist` directory.
     - `plugins: [object]`: the additional [Rollup] plugins. If this field is not
       specified, the default value is an empty array.
 
