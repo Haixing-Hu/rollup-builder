@@ -29,7 +29,11 @@ function configTerserPlugin(format, importMetaUrl, options, plugins) {
   const minify = options.minify ?? (nodeEnv === 'production');
   if (minify) {
     // The @rollup/plugin-terser uses terser under the hood to minify the code.
-    const pluginOptions = options.terserPluginOptions ?? {};
+    const pluginOptions = options.terserPluginOptions ?? {
+      output: {
+        comments: false,    // default to remote all comments
+      },
+    };
     if (options.debug === true) {
       console.debug('[DEBUG] The @rollup/plugin-terser plugin options are:');
       console.dir(pluginOptions, { depth: null });
