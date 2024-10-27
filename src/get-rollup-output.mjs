@@ -27,7 +27,7 @@ function getRollupOutput(format, libraryName, options) {
   switch (format) {
     case 'cjs':       // drop down
     case 'umd':
-      filenameExt = '.js';
+      filenameExt = (format === 'cjs' ? '.cjs' : '.umd.js');
       // The following workaround is to solve the following issue: If an ESM
       // module has both default export and named exports, the rollup cannot
       // handle it correctly. For example, the following is a source ESM module:
@@ -95,7 +95,7 @@ function getRollupOutput(format, libraryName, options) {
   const minify = options.minify ?? (nodeEnv === 'production');
   const camelCaseToDashCase = (s) => s.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   const filenamePrefix = options.filenamePrefix ?? camelCaseToDashCase(libraryName);
-  const filenameBase = `${filenamePrefix}.${format}${minify ? '.min' : ''}`;
+  const filenameBase = `${filenamePrefix}${minify ? '.min' : ''}`;
   const filename = `${filenameBase}${filenameExt}`;
   const outputDir = options.outputDir ?? 'dist';
   const sourcemap = options.sourcemap ?? true;

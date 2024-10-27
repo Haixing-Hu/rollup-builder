@@ -1,6 +1,6 @@
 {
   "name": "@haixing_hu/rollup-builder",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "An tool for creating multi-format JavaScript libraries with Rollup.",
   "author": "Haixing Hu",
   "license": "Apache-2.0",
@@ -21,12 +21,12 @@
     "umd",
     "library"
   ],
-  "main": "dist/rollup-builder.cjs.min.js",
-  "module": "dist/rollup-builder.esm.min.mjs",
+  "main": "dist/rollup-builder.min.cjs",
+  "module": "dist/rollup-builder.min.mjs",
   "exports": {
     ".": {
-      "require": "./dist/rollup-builder.cjs.min.js",
-      "import": "./dist/rollup-builder.esm.min.mjs"
+      "require": "./dist/rollup-builder.min.cjs",
+      "import": "./dist/rollup-builder.min.mjs"
     }
   },
   "files": [
