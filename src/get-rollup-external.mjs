@@ -20,10 +20,19 @@ import { createRequire } from 'node:module';
  * @author Haixing Hu
  */
 function getRollupExternal(importMetaUrl, options) {
+  if (!importMetaUrl) {
+    throw new Error('importMetaUrl is required');
+  }
+  if (!options) {
+    throw new Error('options is required');
+  }
   // gets all peerDependencies packages from 'package.json' of the caller module
   const require = createRequire(importMetaUrl);
   const pkg = require('./package.json');
   const peers = [...Object.keys(pkg.peerDependencies || {})];
+  if (!Array.isArray(peers)) {
+    throw new Error('peerDependencies should be an array');
+  }
   if (peers.length === 0) {
     return [];
   }
@@ -41,7 +50,7 @@ function getRollupExternal(importMetaUrl, options) {
       if ((pattern instanceof RegExp) && pattern.test(id)) {
         return true;
       }
-      if ((pattern instanceof String) && (pattern === id)) {
+      if (((typeof pattern === 'string') || (pattern instanceof String)) && (pattern === id)) {
         return true;
       }
     }

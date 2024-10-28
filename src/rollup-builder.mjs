@@ -146,9 +146,13 @@ function rollupBuilder(libraryName, importMetaUrl, options = {}) {
     const onwarn = getRollupOnWarn();
     const config = { input, output, external, plugins, onwarn };
     result.push(config);
+    if (options.debug === true) {
+      console.debug(`[DEBUG] The options for the format ${format} is:`);
+      console.dir(clonedOptions, { depth: null });
+    }
   }
   if (options.debug === true) {
-    console.debug('[DEBUG] The rollup configurations are:');
+    console.debug('[DEBUG] The generated rollup configurations are:');
     console.dir(result, { depth: null });
   }
   return result;
