@@ -26,8 +26,10 @@ function getRollupOutput(format, libraryName, options) {
   let exports = options.exports ?? 'auto';
   switch (format) {
     case 'cjs':       // drop down
-    case 'umd':
-      filenameExt = (format === 'cjs' ? '.cjs' : '.umd.js');
+    case 'amd':       // drop down
+    case 'umd':       // drop down
+    case 'iife':
+      filenameExt = (format === 'cjs' ? '.cjs' : `.${format}.js`);
       // The following workaround is to solve the following issue: If an ESM
       // module has both default export and named exports, the rollup cannot
       // handle it correctly. For example, the following is a source ESM module:
@@ -82,8 +84,12 @@ function getRollupOutput(format, libraryName, options) {
         footer = 'module.exports = Object.assign(exports.default, exports);';
       }
       break;
-    case 'esm':
+    case 'es':        // drop down
+    case 'esm':       // drop down
+    case 'module':
+      format = 'es';
       filenameExt = '.mjs';
+      // fix the exports, because the ESM format does not support the 'mixed' exports mode
       if (exports === 'mixed') {
         exports = 'auto';
       }
