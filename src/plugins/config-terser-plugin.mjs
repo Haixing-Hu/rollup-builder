@@ -31,8 +31,10 @@ function configTerserPlugin(format, importMetaUrl, options, plugins) {
     // The @rollup/plugin-terser uses terser under the hood to minify the code.
     const pluginOptions = options.terserPluginOptions ?? {
       output: {
-        comments: false,    // default to remote all comments
+        comments: false,      // default to remove all comments
       },
+      keep_classnames: true,  // keep the class names
+      keep_fnames: true,      // keep the function names
     };
     if (options.debug === true) {
       console.debug('[DEBUG] The @rollup/plugin-terser plugin options are:');
