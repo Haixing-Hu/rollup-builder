@@ -1,6 +1,6 @@
 # Rollup Builder
 
-[![npm package](https://img.shields.io/npm/v/@haixing_hu/rollup-builder.svg)](https://npmjs.com/package/@haixing_hu/rollup-builder)
+[![npm package](https://img.shields.io/npm/v/@qubit-ltd/rollup-builder.svg)](https://npmjs.com/package/@qubit-ltd/rollup-builder)
 [![License](https://img.shields.io/badge/License-Apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![中文文档](https://img.shields.io/badge/文档-中文版-blue.svg)](README.zh_CN.md)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
@@ -37,9 +37,9 @@ formats such as CommonJS (CJS), ES Module (ESM), and Universal Module Definition
 You can install `rollup-builder` as a development dependency using `npm` or `yarn`:
 
 ```bash
-npm install @haixing_hu/rollup-builder --save-dev
+npm install @qubit-ltd/rollup-builder --save-dev
 # or
-yarn add @haixing_hu/rollup-builder --dev
+yarn add @qubit-ltd/rollup-builder --dev
 ```
 
 ## <span id="usage">Usage</span>
@@ -51,7 +51,7 @@ yarn add @haixing_hu/rollup-builder --dev
    Example `rollup.config.mjs`:
 
    ```js
-   import rollupBuilder from '@haixing_hu/rollup-builder';
+   import rollupBuilder from '@qubit-ltd/rollup-builder';
 
    export default rollupBuilder('MyLibrary', import.meta.url);
    ```
@@ -64,7 +64,7 @@ yarn add @haixing_hu/rollup-builder --dev
    Example `rollup.config.mjs`:
     
    ```js
-   import rollupBuilder from '@haixing_hu/rollup-builder';
+   import rollupBuilder from '@qubit-ltd/rollup-builder';
     
    export default rollupBuilder('MyLibrary', import.meta.url, {
      formats: ['cjs', 'esm'],
@@ -311,7 +311,7 @@ See the following web pages for more details:
 **NOTE:** In order to use this feature, you must specify the `exports` option to
 `'mixed'` in the `rollup.config.mjs` file, i.e.,
 ```js
-import rollupBuilder from '@haixing_hu/rollup-builder';
+import rollupBuilder from '@qubit-ltd/rollup-builder';
 
 export default rollupBuilder('MyLibrary', import.meta.url, { exports: 'mixed' });
 ```

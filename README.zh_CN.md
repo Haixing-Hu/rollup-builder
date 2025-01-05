@@ -1,6 +1,6 @@
 # Rollup Builder
 
-[![npm package](https://img.shields.io/npm/v/@haixing_hu/rollup-builder.svg)](https://npmjs.com/package/@haixing_hu/rollup-builder)
+[![npm package](https://img.shields.io/npm/v/@qubit-ltd/rollup-builder.svg)](https://npmjs.com/package/@qubit-ltd/rollup-builder)
 [![License](https://img.shields.io/badge/License-Apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![English Document](https://img.shields.io/badge/Document-English-blue.svg)](README.md)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/Haixing-Hu/rollup-builder/tree/master.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/Haixing-Hu/rollup-builder/tree/master)
@@ -34,9 +34,9 @@ Definition (UMD) 格式，可以选择是否进行代码压缩。
 您可以将 `rollup-builder` 安装为开发依赖，使用 `npm` 或 `yarn` 安装：
 
 ```bash
-npm install @haixing_hu/rollup-builder --save-dev
+npm install @qubit-ltd/rollup-builder --save-dev
 # 或
-yarn add @haixing_hu/rollup-builder --dev
+yarn add @qubit-ltd/rollup-builder --dev
 ```
 
 ## <span id="usage">使用</span>
@@ -47,7 +47,7 @@ yarn add @haixing_hu/rollup-builder --dev
    示例 `rollup.config.mjs`：
 
    ```js
-   import rollupBuilder from '@haixing_hu/rollup-builder';
+   import rollupBuilder from '@qubit-ltd/rollup-builder';
 
    export default rollupBuilder('MyLibrary', import.meta.url);
    ```
@@ -58,7 +58,7 @@ yarn add @haixing_hu/rollup-builder --dev
    示例 `rollup.config.mjs`：
 
    ```js
-   import rollupBuilder from '@haixing_hu/rollup-builder';
+   import rollupBuilder from '@qubit-ltd/rollup-builder';
     
    export default rollupBuilder('MyLibrary', import.meta.url, {
      formats: ['cjs', 'esm'],
@@ -267,7 +267,7 @@ import Foo from 'my-module';
 
 **注意：** 为了使用此特性，您必须在 `rollup.config.mjs` 文件中指定 `exports: 'mixed'` 选项，即：
 ```js
-import rollupBuilder from '@haixing_hu/rollup-builder';
+import rollupBuilder from '@qubit-ltd/rollup-builder';
 
 export default rollupBuilder('MyLibrary', import.meta.url, { exports: 'mixed' });
 ```

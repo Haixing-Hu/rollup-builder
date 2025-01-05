@@ -1,6 +1,6 @@
 {
   "name": "@qubit-ltd/rollup-builder",
-  "version": "1.8.5",
+  "version": "1.8.7",
   "description": "An tool for creating multi-format JavaScript libraries with Rollup.",
   "author": "Haixing Hu",
   "license": "Apache-2.0",
