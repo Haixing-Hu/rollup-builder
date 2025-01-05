@@ -12,6 +12,6 @@ module.exports = {
     files: ['*.js', '*.mjs'],
   }],
   extends: [
-    '@haixing_hu/eslint-config',
+    '@qubit-ltd/eslint-config',
   ],
 };
