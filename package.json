@@ -43,7 +43,7 @@
     "lint": "eslint ./src",
     "doc": "jsdoc -c jsdoc.json",
     "build:all": "npm run doc && npm run build:dev && npm run build",
-    "deploy": "npm run clean && npm run lint && npm run build:all && npm publish --registry='https://registry.npmjs.com/' --access public"
+    "deploy": "npm run clean && npm run lint && npm run build:all && npm publish --registry='https://npm.qubit.ltd/' --access public"
   },
   "peerDependencies": {
     "@babel/core": "^7.26.0",
